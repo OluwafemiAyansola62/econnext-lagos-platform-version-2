@@ -1,5 +1,7 @@
 // src/App.jsx
 
+import AnimatedCard from "./components/AnimatedCard/AnimatedCard";
+import MagneticButton from "./components/MagneticButton/MagneticButton";
 import { useState } from "react";
 import Loader from "./components/Loader/Loader";
 import Navbar from "./components/Navbar/Navbar";
@@ -206,25 +208,27 @@ export default function App() {
                   direction={index % 2 === 0 ? "up" : "right"}
                   delay={(index % 3) * 0.08}
                 >
-                  <article className="group h-full rounded-[2rem] bg-white p-7 transition duration-500 hover:-translate-y-2 hover:shadow-2xl">
-                    <div className="flex items-start justify-between">
-                      <span className="text-4xl font-black text-[#3F49C9]">
-                        {item.number}
-                      </span>
+                  <AnimatedCard className="h-full">
+                    <article className="group h-full rounded-[2rem] bg-white p-7">
+                      <div className="flex items-start justify-between">
+                        <span className="text-4xl font-black text-[#3F49C9]">
+                          {item.number}
+                        </span>
 
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C8F3D9] text-lg font-black transition duration-300 group-hover:rotate-45">
-                        ↗
-                      </span>
-                    </div>
+                        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C8F3D9] text-lg font-black transition duration-300 group-hover:rotate-45">
+                          ↗
+                        </span>
+                      </div>
 
-                    <h3 className="mt-12 text-2xl font-black uppercase leading-none">
-                      {item.title}
-                    </h3>
+                      <h3 className="mt-12 text-2xl font-black uppercase leading-none">
+                        {item.title}
+                      </h3>
 
-                    <p className="mt-5 leading-relaxed text-[#211A3B]/60">
-                      {item.description}
-                    </p>
-                  </article>
+                      <p className="mt-5 leading-relaxed text-[#211A3B]/60">
+                        {item.description}
+                      </p>
+                    </article>
+                  </AnimatedCard>
                 </ScrollReveal>
               ))}
             </div>
@@ -311,39 +315,41 @@ export default function App() {
             <div className="mt-16 grid gap-6 md:grid-cols-3">
               {speakers.map((speaker, index) => (
                 <ScrollReveal
-                  key={speaker.name}
+                  key={`${speaker.role}-${index}`}
                   direction={index === 1 ? "up" : index === 0 ? "left" : "right"}
                   delay={index * 0.12}
                 >
-                  <article className="group overflow-hidden rounded-[2rem] bg-[#F3F1F7] transition duration-500 hover:-translate-y-2 hover:shadow-2xl">
-                    <div className="relative aspect-[4/4.2] overflow-hidden bg-[#C8F3D9]">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex h-32 w-32 items-center justify-center rounded-full bg-white shadow-xl">
-                          <span className="text-5xl font-black text-[#00863D]">
-                            ?
-                          </span>
+                  <AnimatedCard className="h-full">
+                    <article className="group h-full overflow-hidden rounded-[2rem] bg-[#F3F1F7]">
+                      <div className="relative aspect-[4/4.2] overflow-hidden bg-[#C8F3D9]">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="flex h-32 w-32 items-center justify-center rounded-full bg-white shadow-xl">
+                            <span className="text-5xl font-black text-[#00863D]">
+                              ?
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="absolute left-5 top-5 rounded-full bg-[#211A3B] px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-white">
+                          Coming Soon
                         </div>
                       </div>
 
-                      <div className="absolute left-5 top-5 rounded-full bg-[#211A3B] px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-white">
-                        Coming Soon
+                      <div className="p-7">
+                        <p className="text-xs font-black uppercase tracking-[0.2em] text-[#00863D]">
+                          {speaker.role}
+                        </p>
+
+                        <h3 className="mt-3 text-2xl font-black uppercase">
+                          {speaker.name}
+                        </h3>
+
+                        <p className="mt-4 leading-relaxed text-[#211A3B]/60">
+                          {speaker.description}
+                        </p>
                       </div>
-                    </div>
-
-                    <div className="p-7">
-                      <p className="text-xs font-black uppercase tracking-[0.2em] text-[#00863D]">
-                        {speaker.role}
-                      </p>
-
-                      <h3 className="mt-3 text-2xl font-black uppercase">
-                        {speaker.name}
-                      </h3>
-
-                      <p className="mt-4 leading-relaxed text-[#211A3B]/60">
-                        {speaker.description}
-                      </p>
-                    </div>
-                  </article>
+                    </article>
+                  </AnimatedCard>
                 </ScrollReveal>
               ))}
             </div>
@@ -375,25 +381,27 @@ export default function App() {
                   direction={index % 2 === 0 ? "up" : "right"}
                   delay={index * 0.1}
                 >
-                  <article className="group rounded-[2rem] bg-white p-5 transition duration-500 hover:-translate-y-2 hover:shadow-2xl">
-                    <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[#C8F3D9]">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#00863D] text-3xl font-black text-white transition duration-500 group-hover:scale-110">
-                          {index + 1}
+                  <AnimatedCard className="h-full">
+                    <article className="group h-full rounded-[2rem] bg-white p-5">
+                      <div className="relative aspect-square overflow-hidden rounded-[1.5rem] bg-[#C8F3D9]">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#00863D] text-3xl font-black text-white transition duration-500 group-hover:scale-110">
+                            {index + 1}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="px-2 pb-2 pt-6">
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00863D]">
-                        {member.role}
-                      </p>
+                      <div className="px-2 pb-2 pt-6">
+                        <p className="text-xs font-black uppercase tracking-[0.18em] text-[#00863D]">
+                          {member.role}
+                        </p>
 
-                      <h3 className="mt-2 text-xl font-black uppercase">
-                        {member.name}
-                      </h3>
-                    </div>
-                  </article>
+                        <h3 className="mt-2 text-xl font-black uppercase">
+                          {member.name}
+                        </h3>
+                      </div>
+                    </article>
+                  </AnimatedCard>
                 </ScrollReveal>
               ))}
             </div>
@@ -419,12 +427,12 @@ export default function App() {
             </ScrollReveal>
 
             <ScrollReveal direction="up" delay={0.2}>
-              <a
+              <MagneticButton
                 href="#"
-                className="mt-10 inline-flex rounded-full bg-[#211A3B] px-8 py-4 text-sm font-black uppercase tracking-[0.15em] text-white transition duration-300 hover:-translate-y-1 hover:bg-black"
+                className="mt-10 inline-flex rounded-full bg-[#211A3B] px-8 py-4 text-sm font-black uppercase tracking-[0.15em] text-white"
               >
                 Registration Coming Soon
-              </a>
+              </MagneticButton>
             </ScrollReveal>
           </div>
         </section>
