@@ -52,8 +52,40 @@ export default function Hero() {
       return undefined;
     }
 
-    const context = gsap.context(() => {
-      const shapeElements = shapesRef.current.filter(Boolean);
+    const shapeElements = shapesRef.current.filter(Boolean);
+    const content = contentRef.current;
+    const mark = markRef.current;
+
+    if (!content || !mark) {
+      return undefined;
+    }
+
+    const supportsHover = window.matchMedia("(hover: hover)").matches;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const ctx = gsap.context(() => {
+      if (prefersReducedMotion) {
+        gsap.set(shapeElements, {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+        });
+
+        gsap.set(content, {
+          opacity: 1,
+          y: 0,
+        });
+
+        gsap.set(mark, {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+        });
+
+        return;
+      }
 
       gsap.set(shapeElements, {
         opacity: 0,
@@ -61,12 +93,12 @@ export default function Hero() {
         y: 50,
       });
 
-      gsap.set(contentRef.current, {
+      gsap.set(content, {
         opacity: 0,
         y: 45,
       });
 
-      gsap.set(markRef.current, {
+      gsap.set(mark, {
         opacity: 0,
         scale: 0.75,
         rotation: -20,
@@ -79,7 +111,7 @@ export default function Hero() {
       });
 
       intro
-        .to(markRef.current, {
+        .to(mark, {
           opacity: 1,
           scale: 1,
           rotation: 0,
@@ -94,16 +126,16 @@ export default function Hero() {
             duration: 1,
             stagger: 0.12,
           },
-          "-=0.9"
+          "-=0.9",
         )
         .to(
-          contentRef.current,
+          content,
           {
             opacity: 1,
             y: 0,
             duration: 1,
           },
-          "-=0.6"
+          "-=0.6",
         );
 
       shapeElements.forEach((shape, index) => {
@@ -121,7 +153,7 @@ export default function Hero() {
         });
       });
 
-      gsap.to(markRef.current, {
+      gsap.to(mark, {
         rotation: 8,
         scale: 1.04,
         duration: 5,
@@ -138,70 +170,79 @@ export default function Hero() {
         ease: "sine.inOut",
       });
 
-      if (window.innerWidth >= 768) {
-        const shapeQuickTos = shapeElements.map((shape, index) => {
-          const depth = shapes[index]?.depth ?? 1;
+      if (!supportsHover || window.innerWidth < 768) {
+        return;
+      }
 
-          return {
-            x: gsap.quickTo(shape, "xPercent", {
-              duration: 0.7,
-              ease: "power3.out",
-            }),
-            y: gsap.quickTo(shape, "yPercent", {
-              duration: 0.7,
-              ease: "power3.out",
-            }),
-            depth,
-          };
-        });
+      const shapeQuickTos = shapeElements.map((shape, index) => {
+        const depth = shapes[index]?.depth ?? 1;
 
-        const markX = gsap.quickTo(markRef.current, "xPercent", {
-          duration: 0.9,
-          ease: "power3.out",
-        });
-
-        const markY = gsap.quickTo(markRef.current, "yPercent", {
-          duration: 0.9,
-          ease: "power3.out",
-        });
-
-        const handleMouseMove = (event) => {
-          const rect = hero.getBoundingClientRect();
-
-          const x = (event.clientX - rect.left) / rect.width - 0.5;
-          const y = (event.clientY - rect.top) / rect.height - 0.5;
-
-          shapeQuickTos.forEach(({ x: moveX, y: moveY, depth }) => {
-            moveX(x * 8 * depth);
-            moveY(y * 8 * depth);
-          });
-
-          markX(x * -2);
-          markY(y * -2);
+        return {
+          moveX: gsap.quickTo(shape, "xPercent", {
+            duration: 0.7,
+            ease: "power3.out",
+          }),
+          moveY: gsap.quickTo(shape, "yPercent", {
+            duration: 0.7,
+            ease: "power3.out",
+          }),
+          depth,
         };
+      });
 
-        const handleMouseLeave = () => {
-          shapeQuickTos.forEach(({ x: moveX, y: moveY }) => {
-            moveX(0);
-            moveY(0);
-          });
+      const markX = gsap.quickTo(mark, "xPercent", {
+        duration: 0.9,
+        ease: "power3.out",
+      });
 
-          markX(0);
-          markY(0);
-        };
+      const markY = gsap.quickTo(mark, "yPercent", {
+        duration: 0.9,
+        ease: "power3.out",
+      });
 
+      const handleMouseMove = (event) => {
+        const rect = hero.getBoundingClientRect();
+
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+        shapeQuickTos.forEach(({ moveX, moveY, depth }) => {
+          moveX(x * 8 * depth);
+          moveY(y * 8 * depth);
+        });
+
+        markX(x * -2);
+        markY(y * -2);
+      };
+
+      const handleMouseLeave = () => {
+        shapeQuickTos.forEach(({ moveX, moveY }) => {
+          moveX(0);
+          moveY(0);
+        });
+
+        markX(0);
+        markY(0);
+      };
+
+      hero.addEventListener("mousemove", handleMouseMove);
+      hero.addEventListener("mouseleave", handleMouseLeave);
+
+      gsap.context(() => {
         hero.addEventListener("mousemove", handleMouseMove);
         hero.addEventListener("mouseleave", handleMouseLeave);
+      }, hero);
 
-        context.add(() => {
-          hero.removeEventListener("mousemove", handleMouseMove);
-          hero.removeEventListener("mouseleave", handleMouseLeave);
-        });
-      }
+      return () => {
+        hero.removeEventListener("mousemove", handleMouseMove);
+        hero.removeEventListener("mouseleave", handleMouseLeave);
+      };
     }, hero);
 
     return () => {
-      context.revert();
+      ctx.revert();
+      hero.removeEventListener("mousemove", () => {});
+      hero.removeEventListener("mouseleave", () => {});
     };
   }, []);
 
