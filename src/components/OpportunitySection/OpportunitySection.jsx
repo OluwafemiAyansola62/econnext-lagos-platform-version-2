@@ -30,6 +30,14 @@ const opportunities = [
   },
 ];
 
+const tags = [
+  "Ideas",
+  "People",
+  "Skills",
+  "Connections",
+  "Opportunities",
+];
+
 export default function OpportunitySection() {
   const sectionRef = useRef(null);
   const headingRef = useRef(null);
@@ -49,31 +57,37 @@ export default function OpportunitySection() {
     ).matches;
 
     const supportsHover = window.matchMedia("(hover: hover)").matches;
-
     const cardElements = cardsRef.current.filter(Boolean);
-
     const cleanupHandlers = [];
 
     const context = gsap.context(() => {
+      gsap.set(
+        [
+          headingRef.current,
+          introRef.current,
+          ...cardElements,
+          accentRef.current,
+        ],
+        {
+          opacity: 0,
+        },
+      );
+
       gsap.set(headingRef.current, {
-        opacity: 0,
-        y: 70,
+        y: 50,
       });
 
       gsap.set(introRef.current, {
-        opacity: 0,
-        y: 45,
+        y: 35,
       });
 
       gsap.set(cardElements, {
-        opacity: 0,
-        y: 70,
-        scale: 0.96,
+        y: 50,
+        scale: 0.98,
       });
 
       gsap.set(accentRef.current, {
-        opacity: 0,
-        scale: 0.75,
+        scale: 0.8,
         rotation: -12,
       });
 
@@ -96,7 +110,7 @@ export default function OpportunitySection() {
       const revealTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: "top 75%",
+          start: "top 80%",
           once: true,
         },
       });
@@ -106,7 +120,7 @@ export default function OpportunitySection() {
           opacity: 1,
           scale: 1,
           rotation: 0,
-          duration: 0.9,
+          duration: 0.8,
           ease: "back.out(1.5)",
         })
         .to(
@@ -114,20 +128,20 @@ export default function OpportunitySection() {
           {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.8,
             ease: "power3.out",
           },
-          "-=0.55",
+          "-=0.5",
         )
         .to(
           introRef.current,
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.7,
             ease: "power3.out",
           },
-          "-=0.55",
+          "-=0.5",
         )
         .to(
           cardElements,
@@ -135,11 +149,11 @@ export default function OpportunitySection() {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.75,
+            duration: 0.7,
             stagger: 0.1,
             ease: "power3.out",
           },
-          "-=0.4",
+          "-=0.35",
         );
 
       gsap.to(accentRef.current, {
@@ -151,85 +165,84 @@ export default function OpportunitySection() {
         ease: "sine.inOut",
       });
 
-      if (supportsHover) {
-        cardElements.forEach((card) => {
-          const moveX = gsap.quickTo(card, "x", {
-            duration: 0.4,
-            ease: "power3.out",
-          });
-
-          const moveY = gsap.quickTo(card, "y", {
-            duration: 0.4,
-            ease: "power3.out",
-          });
-
-          const rotateX = gsap.quickTo(card, "rotationX", {
-            duration: 0.45,
-            ease: "power3.out",
-          });
-
-          const rotateY = gsap.quickTo(card, "rotationY", {
-            duration: 0.45,
-            ease: "power3.out",
-          });
-
-          const handleMouseMove = (event) => {
-            const rect = card.getBoundingClientRect();
-
-            if (!rect.width || !rect.height) {
-              return;
-            }
-
-            const x =
-              (event.clientX - rect.left) / rect.width - 0.5;
-
-            const y =
-              (event.clientY - rect.top) / rect.height - 0.5;
-
-            moveX(x * 5);
-            moveY(y * 5);
-            rotateX(y * -5);
-            rotateY(x * 5);
-          };
-
-          const handleMouseEnter = () => {
-            gsap.to(card, {
-              scale: 1.025,
-              duration: 0.3,
-              ease: "power3.out",
-              overwrite: true,
-            });
-          };
-
-          const handleMouseLeave = () => {
-            moveX(0);
-            moveY(0);
-            rotateX(0);
-            rotateY(0);
-
-            gsap.to(card, {
-              x: 0,
-              y: 0,
-              rotationX: 0,
-              rotationY: 0,
-              scale: 1,
-              duration: 0.4,
-              ease: "power3.out",
-              overwrite: true,
-            });
-          };
-
-          card.addEventListener("mousemove", handleMouseMove);
-          card.addEventListener("mouseenter", handleMouseEnter);
-          card.addEventListener("mouseleave", handleMouseLeave);
-
-          cleanupHandlers.push(() => {
-            card.removeEventListener("mousemove", handleMouseMove);
-            card.removeEventListener("mouseenter", handleMouseEnter);
-            card.removeEventListener("mouseleave", handleMouseLeave);
-          });
-        });
+      if (!supportsHover) {
+        return;
       }
+
+      cardElements.forEach((card) => {
+        const moveX = gsap.quickTo(card, "x", {
+          duration: 0.4,
+          ease: "power3.out",
+        });
+
+        const moveY = gsap.quickTo(card, "y", {
+          duration: 0.4,
+          ease: "power3.out",
+        });
+
+        const rotateX = gsap.quickTo(card, "rotationX", {
+          duration: 0.45,
+          ease: "power3.out",
+        });
+
+        const rotateY = gsap.quickTo(card, "rotationY", {
+          duration: 0.45,
+          ease: "power3.out",
+        });
+
+        const handleMouseMove = (event) => {
+          const rect = card.getBoundingClientRect();
+
+          if (!rect.width || !rect.height) {
+            return;
+          }
+
+          const x = (event.clientX - rect.left) / rect.width - 0.5;
+          const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+          moveX(x * 5);
+          moveY(y * 5);
+          rotateX(y * -5);
+          rotateY(x * 5);
+        };
+
+        const handleMouseEnter = () => {
+          gsap.to(card, {
+            scale: 1.025,
+            duration: 0.3,
+            ease: "power3.out",
+            overwrite: true,
+          });
+        };
+
+        const handleMouseLeave = () => {
+          moveX(0);
+          moveY(0);
+          rotateX(0);
+          rotateY(0);
+
+          gsap.to(card, {
+            x: 0,
+            y: 0,
+            rotationX: 0,
+            rotationY: 0,
+            scale: 1,
+            duration: 0.4,
+            ease: "power3.out",
+            overwrite: true,
+          });
+        };
+
+        card.addEventListener("mousemove", handleMouseMove);
+        card.addEventListener("mouseenter", handleMouseEnter);
+        card.addEventListener("mouseleave", handleMouseLeave);
+
+        cleanupHandlers.push(() => {
+          card.removeEventListener("mousemove", handleMouseMove);
+          card.removeEventListener("mouseenter", handleMouseEnter);
+          card.removeEventListener("mouseleave", handleMouseLeave);
+        });
+      });
     }, section);
 
     return () => {
@@ -245,7 +258,7 @@ export default function OpportunitySection() {
     <section
       ref={sectionRef}
       id="opportunities"
-      className="relative overflow-hidden bg-[#FEFEFE] px-6 py-24 sm:px-8 lg:px-12 lg:py-32"
+      className="relative overflow-hidden bg-[#FEFEFE] px-4 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32"
     >
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -253,24 +266,24 @@ export default function OpportunitySection() {
       >
         <div
           ref={accentRef}
-          className="absolute -right-20 top-20 h-72 w-72 rounded-full border-[35px] border-[#22CF01]/20 sm:h-96 sm:w-96"
+          className="absolute -right-28 top-16 h-64 w-64 rounded-full border-[28px] border-[#22CF01]/20 sm:-right-20 sm:top-20 sm:h-96 sm:w-96 sm:border-[35px]"
         />
 
-        <div className="absolute -left-32 bottom-0 h-96 w-96 rounded-full bg-[#FFC778]/10 blur-[100px]" />
+        <div className="absolute -left-32 bottom-0 h-80 w-80 rounded-full bg-[#FFC778]/10 blur-[100px] sm:h-96 sm:w-96" />
 
-        <div className="absolute right-0 top-1/2 h-80 w-80 rounded-full bg-[#F77006]/10 blur-[110px]" />
+        <div className="absolute -right-20 top-1/2 h-72 w-72 rounded-full bg-[#F77006]/10 blur-[110px] sm:right-0 sm:h-80 sm:w-80" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#F77006]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#F77006] sm:text-sm sm:tracking-[0.25em]">
               Your Opportunity
             </p>
 
             <h2
               ref={headingRef}
-              className="mt-5 max-w-4xl text-5xl font-black uppercase leading-[0.88] tracking-tight sm:text-6xl md:text-8xl"
+              className="mt-4 max-w-4xl text-[2.75rem] font-black uppercase leading-[0.9] tracking-[-0.035em] sm:mt-5 sm:text-6xl md:text-8xl"
             >
               More than a conference.
             </h2>
@@ -278,7 +291,7 @@ export default function OpportunitySection() {
 
           <p
             ref={introRef}
-            className="max-w-2xl text-lg leading-relaxed text-[#211A3B]/65 sm:text-xl"
+            className="max-w-2xl text-base leading-relaxed text-[#211A3B]/65 sm:text-xl"
           >
             Econnext creates a space where ideas become connections,
             connections become opportunities, and opportunities become
@@ -286,31 +299,31 @@ export default function OpportunitySection() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2">
+        <div className="mt-10 grid gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-5">
           {opportunities.map((item, index) => (
             <article
               key={item.number}
               ref={(element) => {
                 cardsRef.current[index] = element;
               }}
-              className="group min-h-[300px] rounded-[2rem] bg-[#211A3B] p-7 text-white transform-gpu [transform-style:preserve-3d] sm:p-9"
+              className="group min-h-[270px] rounded-[1.5rem] bg-[#211A3B] p-6 text-white transform-gpu [transform-style:preserve-3d] sm:min-h-[300px] sm:rounded-[2rem] sm:p-9"
             >
-              <div className="flex items-start justify-between">
-                <span className="text-4xl font-black text-[#FFC778]">
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-3xl font-black text-[#FFC778] sm:text-4xl">
                   {item.number}
                 </span>
 
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#22CF01] text-lg font-black text-[#211A3B] transition-transform duration-300 group-hover:rotate-45">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#22CF01] text-base font-black text-[#211A3B] transition-transform duration-300 group-hover:rotate-45 sm:h-11 sm:w-11 sm:text-lg">
                   ↗
                 </span>
               </div>
 
-              <div className="mt-20">
+              <div className="mt-14 sm:mt-20">
                 <h3 className="text-3xl font-black uppercase leading-none sm:text-4xl">
                   {item.title}
                 </h3>
 
-                <p className="mt-5 max-w-xl leading-relaxed text-white/60">
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60 sm:mt-5 sm:text-base">
                   {item.description}
                 </p>
               </div>
@@ -318,22 +331,16 @@ export default function OpportunitySection() {
           ))}
         </div>
 
-        <div className="mt-8 rounded-[2rem] bg-[#C8F3D9] p-8 sm:p-10">
-          <p className="max-w-4xl text-2xl font-black uppercase leading-tight text-[#211A3B] sm:text-3xl md:text-4xl">
+        <div className="mt-5 rounded-[1.5rem] bg-[#C8F3D9] p-6 sm:mt-8 sm:rounded-[2rem] sm:p-10">
+          <p className="max-w-4xl text-xl font-black uppercase leading-tight text-[#211A3B] sm:text-3xl md:text-4xl">
             Come with questions. Leave with direction.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
-            {[
-              "Ideas",
-              "People",
-              "Skills",
-              "Connections",
-              "Opportunities",
-            ].map((item) => (
+          <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
+            {tags.map((item) => (
               <span
                 key={item}
-                className="rounded-full border border-[#211A3B]/15 bg-white/60 px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-[#211A3B]"
+                className="rounded-full border border-[#211A3B]/15 bg-white/60 px-3.5 py-2 text-[10px] font-black uppercase tracking-[0.1em] text-[#211A3B] sm:px-4 sm:text-xs sm:tracking-[0.12em]"
               >
                 {item}
               </span>

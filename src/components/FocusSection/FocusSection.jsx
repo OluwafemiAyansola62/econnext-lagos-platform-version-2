@@ -67,77 +67,77 @@ export default function FocusSection() {
   return (
     <section
       id="focus"
-      className="relative overflow-hidden bg-[#C8F3D9] px-6 py-24 sm:px-8 lg:px-12 lg:py-32"
+      className="relative overflow-hidden bg-[#C8F3D9] px-4 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32"
     >
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full border-[40px] border-[#22CF01]/10" />
+        <div className="absolute -right-32 -top-32 h-72 w-72 rounded-full border-[28px] border-[#22CF01]/10 sm:h-96 sm:w-96 sm:border-[40px]" />
 
-        <div className="absolute -bottom-40 -left-40 h-[30rem] w-[30rem] rounded-full bg-[#FFC778]/20 blur-[100px]" />
+        <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-[#FFC778]/20 blur-[90px] sm:-bottom-40 sm:-left-40 sm:h-[30rem] sm:w-[30rem] sm:blur-[100px]" />
 
-        <div className="absolute left-[45%] top-[20%] h-32 w-32 rotate-45 rounded-[2rem] bg-[#F77006]/10" />
+        <div className="absolute left-[45%] top-[20%] hidden h-32 w-32 rotate-45 rounded-[2rem] bg-[#F77006]/10 sm:block" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-12">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.25em] text-[#00863D]">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#00863D] sm:text-sm sm:tracking-[0.25em]">
               Conference Focus
             </p>
 
-            <h2 className="mt-5 max-w-4xl text-5xl font-black uppercase leading-[0.86] tracking-[-0.04em] text-[#211A3B] sm:text-6xl md:text-8xl">
+            <h2 className="mt-4 max-w-4xl text-[3.25rem] font-black uppercase leading-[0.88] tracking-[-0.045em] text-[#211A3B] sm:mt-5 sm:text-6xl md:text-8xl">
               Where ideas meet{" "}
               <span className="text-[#F77006]">opportunity.</span>
             </h2>
           </div>
 
           <div className="lg:pb-2">
-            <p className="max-w-2xl text-lg leading-relaxed text-[#211A3B]/65 sm:text-xl">
+            <p className="max-w-2xl text-base leading-relaxed text-[#211A3B]/65 sm:text-lg md:text-xl">
               Six conversations. One shared question: what does the future
               look like for Africa&apos;s next generation?
             </p>
           </div>
         </div>
 
-        <div className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {focusItems.map((item, index) => (
             <article
               key={item.number}
-              className={`group relative min-h-[340px] overflow-hidden rounded-[2rem] p-7 transition duration-500 hover:-translate-y-2 sm:p-9 ${item.className}`}
+              className={`group relative min-h-[280px] overflow-hidden rounded-[1.5rem] p-6 transition duration-500 hover:-translate-y-2 sm:min-h-[340px] sm:rounded-[2rem] sm:p-9 ${item.className}`}
             >
               <div
-                className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full border-[20px] border-current opacity-10 transition duration-500 group-hover:scale-125"
+                className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full border-[16px] border-current opacity-10 transition duration-500 group-hover:scale-125 sm:-right-12 sm:-top-12 sm:h-40 sm:w-40 sm:border-[20px]"
                 aria-hidden="true"
               />
 
-              <div className="relative flex items-start justify-between">
+              <div className="relative flex items-start justify-between gap-4">
                 <span
-                  className={`text-5xl font-black leading-none ${item.numberClass}`}
+                  className={`text-4xl font-black leading-none sm:text-5xl ${item.numberClass}`}
                 >
                   {item.number}
                 </span>
 
                 <span
-                  className={`rounded-full px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] ${item.badgeClass}`}
+                  className={`shrink-0 rounded-full px-3.5 py-2 text-[9px] font-black uppercase tracking-[0.13em] sm:px-4 sm:text-[10px] sm:tracking-[0.15em] ${item.badgeClass}`}
                 >
                   {item.label}
                 </span>
               </div>
 
-              <div className="relative mt-24">
-                <h3 className="max-w-sm text-3xl font-black uppercase leading-[0.92] sm:text-4xl">
+              <div className="relative mt-16 pr-8 sm:mt-24">
+                <h3 className="max-w-sm text-[1.85rem] font-black uppercase leading-[0.92] sm:text-4xl">
                   {item.title}
                 </h3>
 
-                <p className="mt-5 max-w-sm text-sm leading-relaxed opacity-65 sm:text-base">
+                <p className="mt-4 max-w-sm text-sm leading-relaxed opacity-65 sm:mt-5 sm:text-base">
                   {item.description}
                 </p>
               </div>
 
               <span
-                className="absolute bottom-7 right-7 flex h-11 w-11 items-center justify-center rounded-full border border-current/20 text-lg font-black transition duration-500 group-hover:rotate-45"
+                className="absolute bottom-6 right-6 flex h-10 w-10 items-center justify-center rounded-full border border-current/20 text-base font-black transition duration-500 group-hover:rotate-45 sm:bottom-7 sm:right-7 sm:h-11 sm:w-11 sm:text-lg"
                 aria-hidden="true"
               >
                 ↗
@@ -150,7 +150,7 @@ export default function FocusSection() {
 
               {index === 0 && (
                 <span
-                  className="absolute bottom-8 left-8 h-3 w-3 rounded-full bg-[#22CF01]"
+                  className="absolute bottom-7 left-7 h-2.5 w-2.5 rounded-full bg-[#22CF01] sm:bottom-8 sm:left-8 sm:h-3 sm:w-3"
                   aria-hidden="true"
                 />
               )}
@@ -158,14 +158,14 @@ export default function FocusSection() {
           ))}
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-[2rem] bg-[#211A3B] p-8 text-white sm:p-10">
-          <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="mt-5 overflow-hidden rounded-[1.5rem] bg-[#211A3B] p-6 text-white sm:mt-8 sm:rounded-[2rem] sm:p-10">
+          <div className="grid gap-7 md:grid-cols-[1fr_auto] md:items-center md:gap-8">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.25em] text-[#FFC778]">
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#FFC778] sm:text-xs sm:tracking-[0.25em]">
                 One conference. Six perspectives.
               </p>
 
-              <p className="mt-4 max-w-4xl text-2xl font-black uppercase leading-tight sm:text-3xl md:text-4xl">
+              <p className="mt-3 max-w-4xl text-[1.65rem] font-black uppercase leading-[0.95] sm:mt-4 sm:text-3xl md:text-4xl">
                 Understand the economy. Understand the opportunity.
               </p>
             </div>
