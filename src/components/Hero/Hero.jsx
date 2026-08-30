@@ -6,22 +6,22 @@ import gsap from "gsap";
 const shapes = [
   {
     className:
-      "hero-shape hero-shape-ring absolute left-[4%] top-[18%] h-28 w-28 rounded-full border-[18px] border-[#22CF01] sm:h-40 sm:w-40 sm:border-[24px]",
+      "hero-shape hero-shape-ring absolute left-[2%] top-[16%] h-20 w-20 rounded-full border-[12px] border-[#22CF01] sm:left-[4%] sm:top-[18%] sm:h-40 sm:w-40 sm:border-[24px]",
     depth: 1.2,
   },
   {
     className:
-      "hero-shape hero-shape-orange absolute right-[7%] top-[13%] h-24 w-24 rotate-12 rounded-[2rem] bg-[#F77006] sm:h-36 sm:w-36",
+      "hero-shape hero-shape-orange absolute right-[3%] top-[11%] h-16 w-16 rotate-12 rounded-[1.25rem] bg-[#F77006] sm:right-[7%] sm:top-[13%] sm:h-36 sm:w-36 sm:rounded-[2rem]",
     depth: -1,
   },
   {
     className:
-      "hero-shape hero-shape-yellow absolute bottom-[15%] left-[7%] h-20 w-36 -rotate-12 rounded-[1.5rem] bg-[#FFC778] sm:h-28 sm:w-52",
+      "hero-shape hero-shape-yellow absolute bottom-[14%] left-[3%] h-14 w-28 -rotate-12 rounded-[1rem] bg-[#FFC778] sm:bottom-[15%] sm:left-[7%] sm:h-28 sm:w-52 sm:rounded-[1.5rem]",
     depth: 0.8,
   },
   {
     className:
-      "hero-shape hero-shape-green absolute bottom-[10%] right-[5%] h-28 w-28 rotate-45 rounded-[2.5rem] bg-[#22CF01] sm:h-40 sm:w-40",
+      "hero-shape hero-shape-green absolute bottom-[9%] right-[2%] h-20 w-20 rotate-45 rounded-[1.75rem] bg-[#22CF01] sm:bottom-[10%] sm:right-[5%] sm:h-40 sm:w-40 sm:rounded-[2.5rem]",
     depth: -0.7,
   },
 ];
@@ -32,9 +32,9 @@ function LogoInspiredMark() {
       className="pointer-events-none absolute inset-0 overflow-hidden"
       aria-hidden="true"
     >
-      <div className="absolute left-1/2 top-1/2 h-[65%] w-[65%] -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[3rem] border-[30px] border-[#22CF01] sm:border-[45px]" />
+      <div className="absolute left-1/2 top-1/2 h-[52%] w-[52%] -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[2rem] border-[18px] border-[#22CF01] sm:h-[65%] sm:w-[65%] sm:rounded-[3rem] sm:border-[45px]" />
 
-      <div className="absolute left-1/2 top-1/2 h-[32%] w-[32%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F77006]" />
+      <div className="absolute left-1/2 top-1/2 h-[25%] w-[25%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F77006] sm:h-[32%] sm:w-[32%]" />
     </div>
   );
 }
@@ -64,6 +64,9 @@ export default function Hero() {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+
+    let handleMouseMove;
+    let handleMouseLeave;
 
     const ctx = gsap.context(() => {
       if (prefersReducedMotion) {
@@ -200,8 +203,12 @@ export default function Hero() {
         ease: "power3.out",
       });
 
-      const handleMouseMove = (event) => {
+      handleMouseMove = (event) => {
         const rect = hero.getBoundingClientRect();
+
+        if (!rect.width || !rect.height) {
+          return;
+        }
 
         const x = (event.clientX - rect.left) / rect.width - 0.5;
         const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -215,7 +222,7 @@ export default function Hero() {
         markY(y * -2);
       };
 
-      const handleMouseLeave = () => {
+      handleMouseLeave = () => {
         shapeQuickTos.forEach(({ moveX, moveY }) => {
           moveX(0);
           moveY(0);
@@ -227,40 +234,36 @@ export default function Hero() {
 
       hero.addEventListener("mousemove", handleMouseMove);
       hero.addEventListener("mouseleave", handleMouseLeave);
-
-      gsap.context(() => {
-        hero.addEventListener("mousemove", handleMouseMove);
-        hero.addEventListener("mouseleave", handleMouseLeave);
-      }, hero);
-
-      return () => {
-        hero.removeEventListener("mousemove", handleMouseMove);
-        hero.removeEventListener("mouseleave", handleMouseLeave);
-      };
     }, hero);
 
     return () => {
+      if (handleMouseMove) {
+        hero.removeEventListener("mousemove", handleMouseMove);
+      }
+
+      if (handleMouseLeave) {
+        hero.removeEventListener("mouseleave", handleMouseLeave);
+      }
+
       ctx.revert();
-      hero.removeEventListener("mousemove", () => {});
-      hero.removeEventListener("mouseleave", () => {});
     };
   }, []);
 
   return (
     <section
       ref={heroRef}
-      className="relative isolate flex min-h-[calc(100vh-80px)] items-center overflow-hidden bg-[#211A3B] px-6 py-20 text-white sm:px-8 lg:px-12"
+      className="relative isolate flex min-h-[calc(100svh-72px)] items-center overflow-hidden bg-[#211A3B] px-5 py-16 text-white sm:min-h-[calc(100vh-80px)] sm:px-8 sm:py-20 lg:px-12"
       aria-labelledby="hero-title"
     >
       <div
         className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden="true"
       >
-        <div className="absolute -left-[10%] top-[10%] h-[45vw] w-[45vw] rounded-full bg-[#22CF01]/10 blur-[120px]" />
+        <div className="absolute -left-[20%] top-[8%] h-[70vw] w-[70vw] rounded-full bg-[#22CF01]/10 blur-[90px] sm:-left-[10%] sm:top-[10%] sm:h-[45vw] sm:w-[45vw] sm:blur-[120px]" />
 
-        <div className="absolute bottom-0 right-0 h-[40vw] w-[40vw] rounded-full bg-[#F77006]/10 blur-[120px]" />
+        <div className="absolute -bottom-[10%] -right-[15%] h-[65vw] w-[65vw] rounded-full bg-[#F77006]/10 blur-[90px] sm:bottom-0 sm:right-0 sm:h-[40vw] sm:w-[40vw] sm:blur-[120px]" />
 
-        <div className="absolute left-1/2 top-1/2 h-[30vw] w-[30vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFC778]/10 blur-[140px]" />
+        <div className="absolute left-1/2 top-1/2 h-[45vw] w-[45vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#FFC778]/10 blur-[100px] sm:h-[30vw] sm:w-[30vw] sm:blur-[140px]" />
       </div>
 
       <LogoInspiredMark />
@@ -270,9 +273,9 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
       >
-        <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 sm:h-[600px] sm:w-[600px]" />
+        <div className="absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10 sm:h-[600px] sm:w-[600px]" />
 
-        <div className="absolute left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[4rem] border border-white/10 sm:h-[420px] sm:w-[420px]" />
+        <div className="absolute left-1/2 top-1/2 h-[195px] w-[195px] -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[3rem] border border-white/10 sm:h-[420px] sm:w-[420px] sm:rounded-[4rem]" />
       </div>
 
       {shapes.map((shape, index) => (
@@ -288,46 +291,46 @@ export default function Hero() {
 
       <div
         ref={contentRef}
-        className="relative z-10 mx-auto w-full max-w-6xl text-center"
+        className="relative z-10 mx-auto w-full max-w-6xl py-6 text-center sm:py-0"
       >
-        <div className="mb-8 flex justify-center">
-          <div className="rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-md">
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-[#FFC778] sm:text-sm">
+        <div className="mb-5 flex justify-center sm:mb-8">
+          <div className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md sm:px-5 sm:py-2">
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#FFC778] sm:text-xs sm:tracking-[0.3em] sm:text-sm">
               NESA Lagos presents
             </p>
           </div>
         </div>
 
-        <div className="mb-8 flex justify-center">
+        <div className="mb-5 flex justify-center sm:mb-8">
           <img
             src="/assets/econnext-logo.png"
             alt="Econnext Lagos"
-            className="h-auto w-[190px] object-contain sm:w-[240px]"
+            className="h-auto w-[150px] object-contain sm:w-[240px]"
           />
         </div>
 
-        <p className="mx-auto max-w-3xl text-sm font-black uppercase tracking-[0.22em] text-[#22CF01] sm:text-base">
+        <p className="mx-auto max-w-3xl text-[11px] font-black uppercase tracking-[0.18em] text-[#22CF01] sm:text-base sm:tracking-[0.22em]">
           Lagos Conference 2026
         </p>
 
         <h1
           id="hero-title"
-          className="mx-auto mt-5 max-w-5xl text-5xl font-black uppercase leading-[0.88] tracking-[-0.04em] sm:text-7xl md:text-8xl lg:text-9xl"
+          className="mx-auto mt-4 max-w-5xl text-[2.85rem] font-black uppercase leading-[0.86] tracking-[-0.045em] sm:mt-5 sm:text-7xl md:text-8xl lg:text-9xl"
         >
           The Future
           <span className="block text-[#FFC778]">Starts Here.</span>
         </h1>
 
-        <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg md:text-xl">
+        <p className="mx-auto mt-6 max-w-2xl text-[14px] leading-[1.55] text-white/70 sm:mt-8 sm:text-lg md:text-xl">
           Where Africa&apos;s next generation of economists, innovators,
           entrepreneurs, and leaders connect with the opportunities shaping
           tomorrow.
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
           <a
             href="#register"
-            className="group inline-flex min-w-[190px] items-center justify-center rounded-full bg-[#F77006] px-7 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition duration-300 hover:-translate-y-1 hover:bg-[#ff861f]"
+            className="group inline-flex min-h-12 w-full max-w-[260px] items-center justify-center rounded-full bg-[#F77006] px-6 py-3.5 text-xs font-black uppercase tracking-[0.1em] text-white transition duration-300 hover:-translate-y-1 hover:bg-[#ff861f] sm:min-w-[190px] sm:w-auto sm:max-w-none sm:px-7 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
           >
             Register Now
             <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
@@ -337,36 +340,36 @@ export default function Hero() {
 
           <a
             href="#about"
-            className="inline-flex min-w-[190px] items-center justify-center rounded-full border border-white/30 bg-white/5 px-7 py-4 text-sm font-black uppercase tracking-[0.12em] text-white backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-white hover:bg-white/10"
+            className="inline-flex min-h-12 w-full max-w-[260px] items-center justify-center rounded-full border border-white/30 bg-white/5 px-6 py-3.5 text-xs font-black uppercase tracking-[0.1em] text-white backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-white hover:bg-white/10 sm:min-w-[190px] sm:w-auto sm:max-w-none sm:px-7 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
           >
             Explore Econnext
           </a>
         </div>
 
-        <div className="mx-auto mt-14 grid max-w-2xl grid-cols-3 border-y border-white/10 py-5">
-          <div className="px-3">
-            <p className="text-xl font-black text-[#FFC778] sm:text-3xl">
+        <div className="mx-auto mt-9 grid max-w-2xl grid-cols-3 border-y border-white/10 py-4 sm:mt-14 sm:py-5">
+          <div className="px-2 sm:px-3">
+            <p className="text-lg font-black text-[#FFC778] sm:text-3xl">
               2026
             </p>
-            <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/50 sm:text-xs">
+            <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/50 sm:text-xs sm:tracking-[0.2em]">
               Conference
             </p>
           </div>
 
-          <div className="border-x border-white/10 px-3">
-            <p className="text-xl font-black text-[#22CF01] sm:text-3xl">
+          <div className="border-x border-white/10 px-2 sm:px-3">
+            <p className="text-lg font-black text-[#22CF01] sm:text-3xl">
               Lagos
             </p>
-            <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/50 sm:text-xs">
+            <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/50 sm:text-xs sm:tracking-[0.2em]">
               Nigeria
             </p>
           </div>
 
-          <div className="px-3">
-            <p className="text-xl font-black text-[#F77006] sm:text-3xl">
+          <div className="px-2 sm:px-3">
+            <p className="text-lg font-black text-[#F77006] sm:text-3xl">
               NESA
             </p>
-            <p className="mt-1 text-[9px] font-bold uppercase tracking-[0.2em] text-white/50 sm:text-xs">
+            <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/50 sm:text-xs sm:tracking-[0.2em]">
               Lagos
             </p>
           </div>
@@ -374,7 +377,7 @@ export default function Hero() {
       </div>
 
       <div
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2"
+        className="absolute bottom-4 left-1/2 z-10 hidden -translate-x-1/2 sm:bottom-6 sm:block"
         aria-hidden="true"
       >
         <div className="flex flex-col items-center gap-2 text-white/40">
