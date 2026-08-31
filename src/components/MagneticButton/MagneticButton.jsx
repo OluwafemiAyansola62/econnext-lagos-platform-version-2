@@ -1,6 +1,7 @@
 // src/components/MagneticButton/MagneticButton.jsx
 
 import { useLayoutEffect, useRef } from "react";
+
 import gsap from "gsap";
 
 export default function MagneticButton({
@@ -18,11 +19,12 @@ export default function MagneticButton({
     }
 
     const supportsHover = window.matchMedia("(hover: hover)").matches;
+    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (!supportsHover || prefersReducedMotion) {
+    if (!supportsHover || !hasFinePointer || prefersReducedMotion) {
       return undefined;
     }
 
@@ -40,16 +42,25 @@ export default function MagneticButton({
       const handleMouseMove = (event) => {
         const rect = button.getBoundingClientRect();
 
+        if (!rect.width || !rect.height) {
+          return;
+        }
+
         const x = (event.clientX - rect.left) / rect.width - 0.5;
         const y = (event.clientY - rect.top) / rect.height - 0.5;
 
-        moveX(x * 12);
-        moveY(y * 12);
+        moveX(x * 8);
+        moveY(y * 8);
       };
 
       const handleMouseLeave = () => {
-        moveX(0);
-        moveY(0);
+        gsap.to(button, {
+          x: 0,
+          y: 0,
+          duration: 0.35,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
       };
 
       button.addEventListener("mousemove", handleMouseMove);
@@ -61,7 +72,9 @@ export default function MagneticButton({
       };
     }, button);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
   return (
