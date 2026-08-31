@@ -1,7 +1,6 @@
 // src/components/AnimatedCard/AnimatedCard.jsx
 
 import { useLayoutEffect, useRef } from "react";
-
 import gsap from "gsap";
 
 export default function AnimatedCard({
@@ -19,16 +18,15 @@ export default function AnimatedCard({
     }
 
     const supportsHover = window.matchMedia("(hover: hover)").matches;
-    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (!supportsHover || !hasFinePointer || prefersReducedMotion) {
+    if (!supportsHover || prefersReducedMotion) {
       return undefined;
     }
 
-    const ctx = gsap.context(() => {
+    const context = gsap.context(() => {
       const moveX = gsap.quickTo(card, "x", {
         duration: 0.45,
         ease: "power3.out",
@@ -52,10 +50,6 @@ export default function AnimatedCard({
       const handleMouseMove = (event) => {
         const rect = card.getBoundingClientRect();
 
-        if (!rect.width || !rect.height) {
-          return;
-        }
-
         const x = (event.clientX - rect.left) / rect.width - 0.5;
         const y = (event.clientY - rect.top) / rect.height - 0.5;
 
@@ -70,7 +64,6 @@ export default function AnimatedCard({
           scale: 1.025,
           duration: 0.35,
           ease: "power3.out",
-          overwrite: "auto",
         });
       };
 
@@ -81,14 +74,9 @@ export default function AnimatedCard({
         rotateY(0);
 
         gsap.to(card, {
-          x: 0,
-          y: 0,
-          rotationX: 0,
-          rotationY: 0,
           scale: 1,
           duration: 0.45,
           ease: "power3.out",
-          overwrite: "auto",
         });
       };
 
@@ -103,15 +91,13 @@ export default function AnimatedCard({
       };
     }, card);
 
-    return () => {
-      ctx.revert();
-    };
+    return () => context.revert();
   }, [intensity]);
 
   return (
     <div
       ref={cardRef}
-      className={`transform-gpu [transform-style:preserve-3d] ${className}`}
+      className={`transform-gpu will-change-transform [transform-style:preserve-3d] ${className}`}
     >
       {children}
     </div>

@@ -47,9 +47,9 @@ export default function TeamSection() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    const cards = cardsRef.current.filter(Boolean);
-
     const context = gsap.context(() => {
+      const cards = cardsRef.current.filter(Boolean);
+
       gsap.set(headingRef.current, {
         opacity: 0,
         y: 70,
@@ -137,7 +137,7 @@ export default function TeamSection() {
       className="relative overflow-hidden bg-[#ACC640] px-5 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32"
     >
       <div
-        className="pointer-events-none absolute -right-32 top-12 h-72 w-72 rounded-full border-[32px] border-[#211A3B]/10 sm:h-96 sm:w-96 sm:border-[45px]"
+        className="pointer-events-none absolute -right-24 top-12 h-72 w-72 rounded-full border-[32px] border-[#211A3B]/10 sm:-right-32 sm:h-96 sm:w-96 sm:border-[45px]"
         aria-hidden="true"
       />
 
@@ -177,82 +177,84 @@ export default function TeamSection() {
 
         <div className="mt-10 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:mt-16 lg:grid-cols-4">
           {teamMembers.map((member, index) => (
-            <AnimatedCard
+            <div
               key={member.role}
-              intensity={index % 2 === 0 ? 1 : 0.8}
-              className={`
-                ${
-                  index === 1
-                    ? "lg:translate-y-10"
-                    : index === 2
-                      ? "lg:-translate-y-4"
-                      : index === 3
-                        ? "lg:translate-y-6"
-                        : ""
-                }
-              `}
+              className={
+                index === 1
+                  ? "lg:pt-10"
+                  : index === 2
+                    ? "lg:-mt-4"
+                    : index === 3
+                      ? "lg:pt-6"
+                      : ""
+              }
             >
-              <article
-                ref={(element) => {
-                  cardsRef.current[index] = element;
-                }}
-                className="group relative h-full overflow-hidden rounded-[1.5rem] bg-[#FEFEFE] p-4 shadow-sm sm:rounded-[2rem] sm:p-5"
+              <AnimatedCard
+                intensity={index % 2 === 0 ? 1 : 0.8}
+                className="h-full"
               >
-                <div
-                  className="absolute right-0 top-0 h-28 w-28 translate-x-1/3 -translate-y-1/3 rounded-full opacity-20 blur-2xl transition duration-500 group-hover:scale-150 sm:h-32 sm:w-32"
-                  style={{ backgroundColor: member.accent }}
-                  aria-hidden="true"
-                />
-
-                <div className="relative aspect-[1/0.98] overflow-hidden rounded-[1.25rem] bg-[#C8F3D9] sm:aspect-square sm:rounded-[1.5rem]">
+                <article
+                  ref={(element) => {
+                    cardsRef.current[index] = element;
+                  }}
+                  className="group relative h-full overflow-hidden rounded-[1.5rem] bg-[#FEFEFE] p-4 shadow-sm sm:rounded-[2rem] sm:p-5"
+                >
                   <div
-                    className="absolute inset-0 opacity-30 transition duration-500 group-hover:scale-110"
-                    style={{
-                      background: `radial-gradient(circle at 70% 30%, ${member.accent}, transparent 45%)`,
-                    }}
-                    aria-hidden="true"
-                  />
-
-                  <div className="absolute left-4 top-4 rounded-full bg-[#211A3B] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-[0.13em] text-white sm:left-5 sm:top-5 sm:px-3 sm:py-2 sm:text-[10px] sm:tracking-[0.15em]">
-                    {String(index + 1).padStart(2, "0")}
-                  </div>
-
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-black text-[#211A3B] transition duration-500 group-hover:scale-110 sm:h-24 sm:w-24 sm:text-3xl"
-                      style={{ backgroundColor: member.accent }}
-                    >
-                      {index + 1}
-                    </div>
-                  </div>
-
-                  <div
-                    className="absolute bottom-0 left-0 h-1 w-0 transition-all duration-500 group-hover:w-full"
+                    className="absolute right-0 top-0 h-28 w-28 translate-x-1/3 -translate-y-1/3 rounded-full opacity-20 blur-2xl transition duration-500 group-hover:scale-150 sm:h-32 sm:w-32"
                     style={{ backgroundColor: member.accent }}
                     aria-hidden="true"
                   />
-                </div>
 
-                <div className="px-1 pb-1 pt-5 sm:px-2 sm:pb-2 sm:pt-6">
-                  <p
-                    className="max-w-[90%] text-[10px] font-black uppercase leading-[1.35] tracking-[0.14em] sm:text-xs sm:tracking-[0.18em]"
-                    style={{ color: member.accent }}
-                  >
-                    {member.role}
-                  </p>
+                  <div className="relative aspect-[1/0.98] overflow-hidden rounded-[1.25rem] bg-[#C8F3D9] sm:aspect-square sm:rounded-[1.5rem]">
+                    <div
+                      className="absolute inset-0 opacity-30 transition duration-500 group-hover:scale-110"
+                      style={{
+                        background: `radial-gradient(circle at 70% 30%, ${member.accent}, transparent 45%)`,
+                      }}
+                      aria-hidden="true"
+                    />
 
-                  <div className="mt-3 flex items-end justify-between gap-3 sm:gap-4">
-                    <h3 className="text-[1.35rem] font-black uppercase leading-[0.92] text-[#211A3B] min-[390px]:text-[1.45rem] sm:text-xl">
-                      {member.name}
-                    </h3>
+                    <div className="absolute left-4 top-4 rounded-full bg-[#211A3B] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-[0.13em] text-white sm:left-5 sm:top-5 sm:px-3 sm:py-2 sm:text-[10px] sm:tracking-[0.15em]">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
 
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#211A3B] text-xs font-black text-white transition duration-300 group-hover:rotate-45 sm:h-9 sm:w-9 sm:text-sm">
-                      ↗
-                    </span>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div
+                        className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-black text-[#211A3B] transition duration-500 group-hover:scale-110 sm:h-24 sm:w-24 sm:text-3xl"
+                        style={{ backgroundColor: member.accent }}
+                      >
+                        {index + 1}
+                      </div>
+                    </div>
+
+                    <div
+                      className="absolute bottom-0 left-0 h-1 w-0 transition-all duration-500 group-hover:w-full"
+                      style={{ backgroundColor: member.accent }}
+                      aria-hidden="true"
+                    />
                   </div>
-                </div>
-              </article>
-            </AnimatedCard>
+
+                  <div className="px-1 pb-1 pt-5 sm:px-2 sm:pb-2 sm:pt-6">
+                    <p
+                      className="max-w-[90%] text-[10px] font-black uppercase leading-[1.35] tracking-[0.14em] sm:text-xs sm:tracking-[0.18em]"
+                      style={{ color: member.accent }}
+                    >
+                      {member.role}
+                    </p>
+
+                    <div className="mt-3 flex items-end justify-between gap-3 sm:gap-4">
+                      <h3 className="text-[1.35rem] font-black uppercase leading-[0.92] text-[#211A3B] min-[390px]:text-[1.45rem] sm:text-xl">
+                        {member.name}
+                      </h3>
+
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#211A3B] text-xs font-black text-white transition duration-300 group-hover:rotate-45 sm:h-9 sm:w-9 sm:text-sm">
+                        ↗
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              </AnimatedCard>
+            </div>
           ))}
         </div>
 
