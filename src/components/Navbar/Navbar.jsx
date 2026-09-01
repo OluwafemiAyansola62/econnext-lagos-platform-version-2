@@ -22,17 +22,16 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
+    <header className="fixed inset-x-0 top-0 z-50">
       <nav className="mx-auto w-full border-b border-black/10 bg-[#d0f4df]/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
-          {/* BRAND */}
+        <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 md:px-8">
           <a
             href="#hero"
             onClick={closeMenu}
             className="flex items-center gap-3"
             aria-label="Econnext Lagos 2026 home"
           >
-            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white">
+            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-white sm:h-12 sm:w-12">
               <img
                 src="/assets/econnext-logo.png"
                 alt="Econnext Lagos logo"
@@ -44,13 +43,13 @@ export default function Navbar() {
               <p className="text-lg font-black tracking-tight text-black">
                 ECONNEXT
               </p>
+
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-black/60">
                 Lagos 2026
               </p>
             </div>
           </a>
 
-          {/* DESKTOP NAVIGATION */}
           <div className="hidden items-center gap-6 lg:flex">
             {navLinks.map((link) => (
               <a
@@ -70,21 +69,25 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* MOBILE MENU BUTTON */}
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             className="flex h-11 w-11 items-center justify-center rounded-full bg-black text-xl text-white lg:hidden"
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-label={
+              menuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
           >
             {menuOpen ? "×" : "☰"}
           </button>
         </div>
 
-        {/* MOBILE NAVIGATION */}
         {menuOpen && (
-          <div className="border-t border-black/10 bg-[#d0f4df] px-5 pb-6 pt-4 lg:hidden">
+          <div
+            id="mobile-navigation"
+            className="border-t border-black/10 bg-[#d0f4df] px-5 pb-6 pt-4 lg:hidden"
+          >
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <a

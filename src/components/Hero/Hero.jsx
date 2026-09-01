@@ -64,15 +64,17 @@ export default function Hero() {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const isMobile = window.innerWidth < 768;
 
     let handleMouseMove;
     let handleMouseLeave;
 
-    const ctx = gsap.context(() => {
+    const context = gsap.context(() => {
       if (prefersReducedMotion) {
         gsap.set(shapeElements, {
           opacity: 1,
           scale: 1,
+          x: 0,
           y: 0,
         });
 
@@ -85,6 +87,8 @@ export default function Hero() {
           opacity: 1,
           scale: 1,
           rotation: 0,
+          x: 0,
+          y: 0,
         });
 
         return;
@@ -141,6 +145,10 @@ export default function Hero() {
           "-=0.6",
         );
 
+      if (isMobile) {
+        return;
+      }
+
       shapeElements.forEach((shape, index) => {
         const direction = index % 2 === 0 ? 1 : -1;
 
@@ -173,7 +181,7 @@ export default function Hero() {
         ease: "sine.inOut",
       });
 
-      if (!supportsHover || window.innerWidth < 768) {
+      if (!supportsHover) {
         return;
       }
 
@@ -245,13 +253,14 @@ export default function Hero() {
         hero.removeEventListener("mouseleave", handleMouseLeave);
       }
 
-      ctx.revert();
+      context.revert();
     };
   }, []);
 
   return (
     <section
       ref={heroRef}
+      id="hero"
       className="relative isolate flex min-h-[calc(100svh-72px)] items-center overflow-hidden bg-[#211A3B] px-5 py-16 text-white sm:min-h-[calc(100vh-80px)] sm:px-8 sm:py-20 lg:px-12"
       aria-labelledby="hero-title"
     >
@@ -295,7 +304,7 @@ export default function Hero() {
       >
         <div className="mb-5 flex justify-center sm:mb-8">
           <div className="rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md sm:px-5 sm:py-2">
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#FFC778] sm:text-xs sm:tracking-[0.3em] sm:text-sm">
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#FFC778] sm:text-xs sm:text-sm sm:tracking-[0.3em]">
               NESA Lagos presents
             </p>
           </div>
@@ -330,9 +339,10 @@ export default function Hero() {
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
           <a
             href="#register"
-            className="group inline-flex min-h-12 w-full max-w-[260px] items-center justify-center rounded-full bg-[#F77006] px-6 py-3.5 text-xs font-black uppercase tracking-[0.1em] text-white transition duration-300 hover:-translate-y-1 hover:bg-[#ff861f] sm:min-w-[190px] sm:w-auto sm:max-w-none sm:px-7 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
+            className="group inline-flex min-h-12 w-full max-w-[260px] items-center justify-center rounded-full bg-[#F77006] px-6 py-3.5 text-xs font-black uppercase tracking-[0.1em] text-white transition duration-300 hover:-translate-y-1 hover:bg-[#ff861f] sm:w-auto sm:min-w-[190px] sm:max-w-none sm:px-7 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
           >
             Register Now
+
             <span className="ml-3 transition-transform duration-300 group-hover:translate-x-1">
               →
             </span>
@@ -340,7 +350,7 @@ export default function Hero() {
 
           <a
             href="#about"
-            className="inline-flex min-h-12 w-full max-w-[260px] items-center justify-center rounded-full border border-white/30 bg-white/5 px-6 py-3.5 text-xs font-black uppercase tracking-[0.1em] text-white backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-white hover:bg-white/10 sm:min-w-[190px] sm:w-auto sm:max-w-none sm:px-7 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
+            className="inline-flex min-h-12 w-full max-w-[260px] items-center justify-center rounded-full border border-white/30 bg-white/5 px-6 py-3.5 text-xs font-black uppercase tracking-[0.1em] text-white backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-white hover:bg-white/10 sm:w-auto sm:min-w-[190px] sm:max-w-none sm:px-7 sm:py-4 sm:text-sm sm:tracking-[0.12em]"
           >
             Explore Econnext
           </a>
@@ -351,6 +361,7 @@ export default function Hero() {
             <p className="text-lg font-black text-[#FFC778] sm:text-3xl">
               2026
             </p>
+
             <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/50 sm:text-xs sm:tracking-[0.2em]">
               Conference
             </p>
@@ -360,6 +371,7 @@ export default function Hero() {
             <p className="text-lg font-black text-[#22CF01] sm:text-3xl">
               Lagos
             </p>
+
             <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/50 sm:text-xs sm:tracking-[0.2em]">
               Nigeria
             </p>
@@ -369,6 +381,7 @@ export default function Hero() {
             <p className="text-lg font-black text-[#F77006] sm:text-3xl">
               NESA
             </p>
+
             <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.14em] text-white/50 sm:text-xs sm:tracking-[0.2em]">
               Lagos
             </p>
