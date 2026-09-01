@@ -12,6 +12,8 @@ import WhyAttendSection from "./components/WhyAttendSection/WhyAttendSection";
 import SpeakersSection from "./components/SpeakersSection/SpeakersSection";
 import TeamSection from "./components/TeamSection/TeamSection";
 import RegisterSection from "./components/RegisterSection/RegisterSection";
+import NESASection from "./components/NESASection/NESASection";
+import FAQSection from "./components/FAQSection/FAQSection";
 
 function PlaceholderSection({ id, eyebrow, title, description }) {
   return (
@@ -57,7 +59,7 @@ export default function App() {
         <AboutSection />
         <FocusSection />
         <WhyAttendSection />
-
+        <NESASection />
         <PlaceholderSection
           id="nesa"
           eyebrow="Presented by NESA"
@@ -72,7 +74,7 @@ export default function App() {
 
         <SpeakersSection />
         <TeamSection />
-
+        <FAQSection />
         <PlaceholderSection
           id="volunteers"
           eyebrow="Get involved"
